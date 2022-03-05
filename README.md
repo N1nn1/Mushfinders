@@ -1,9 +1,4 @@
-# Fabric Example Mod
+# mushfinders
 
-## Setup
-
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+## license
+This project's code is licensed under [MIT](LICENSE), and assets are licensed under [ARR](LICENSE_ASSETS). If you would like clarification or explicit permission, contact us on [Discord](https://discord.moddingplayground.net).
