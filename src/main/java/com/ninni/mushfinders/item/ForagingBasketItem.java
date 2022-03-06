@@ -1,7 +1,7 @@
 package com.ninni.mushfinders.item;
 
+import com.ninni.mushfinders.mixin.ItemStackAccessor;
 import com.ninni.mushfinders.tag.MushfindersItemTags;
-import net.minecraft.client.item.BundleTooltipData;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.Entity;
@@ -11,6 +11,7 @@ import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsage;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -23,236 +24,247 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ClickType;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class ForagingBasketItem extends Item {
-    private static final int ITEM_BAR_COLOR = MathHelper.packRgb(1.0F, 0.4F, 0.4F);
+    public static final short MAX_ITEMS = (64 * 2) + (64 / 2);
+
+    public static final String ITEMS_KEY = "Items";
+    public static final String COUNT_KEY = "Count";
+    public static final String TAGS_KEY = "tag";
+    public static final String ID_KEY = "id";
+    public static final String AIR_ID = Registry.ITEM.getId(Items.AIR).toString();
 
     public ForagingBasketItem(Settings settings) {
         super(settings);
     }
 
     @Override
-    public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
-        if (clickType != ClickType.RIGHT) {
-            return false;
-        } else {
-            ItemStack itemStack = slot.getStack();
-            if (itemStack.isEmpty()) {
-                this.playRemoveOneSound(player);
-                removeFirstStack(stack).ifPresent((removedStack) -> addToBundle(stack, slot.insertStack(removedStack)));
-            } else if (itemStack.isIn(MushfindersItemTags.FORAGEABLES)) {
-                int i = (112 - getBundleOccupancy(stack)) / getItemOccupancy(itemStack);
-                int j = addToBundle(stack, slot.takeStackRange(itemStack.getCount(), i, player));
-                if (j > 0) {
-                    this.playInsertSound(player);
-                }
-            }
+    public boolean onStackClicked(ItemStack stack, Slot slot, ClickType type, PlayerEntity player) {
+        if (type == ClickType.LEFT) return false;
 
-            return true;
+        ItemStack sstack = slot.getStack();
+        if (sstack.isEmpty()) {
+            this.removeFirstStack(stack).ifPresent(s -> {
+                this.addToStorage(stack, slot.insertStack(s));
+                this.playRemoveOneSound(player);
+            });
+        } else if (sstack.isIn(MushfindersItemTags.FORAGEABLES)) {
+            int max = (MAX_ITEMS - this.getStorageOccupancy(stack)) / this.getItemOccupancy(sstack);
+            int in = this.addToStorage(stack, slot.takeStackRange(sstack.getCount(), max, player));
+            if (in > 0) this.playInsertSound(player);
         }
+
+        return true;
     }
 
     @Override
-    public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
+    public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference ref) {
         if (clickType == ClickType.RIGHT && slot.canTakePartial(player)) {
             if (otherStack.isEmpty()) {
-                removeFirstStack(stack).ifPresent((itemStack) -> {
+                this.removeFirstStack(stack).ifPresent(s -> {
                     this.playRemoveOneSound(player);
-                    cursorStackReference.set(itemStack);
+                    ref.set(s);
                 });
             } else {
-                int i = addToBundle(stack, otherStack);
-                if (i > 0) {
+                int in = this.addToStorage(stack, otherStack);
+                if (in > 0) {
                     this.playInsertSound(player);
-                    otherStack.decrement(i);
+                    otherStack.decrement(in);
                 }
             }
 
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack itemStack = user.getStackInHand(hand);
-        if (dropAllBundledItems(itemStack, user)) {
-            this.playDropContentsSound(user);
-            user.incrementStat(Stats.USED.getOrCreateStat(this));
-            return TypedActionResult.success(itemStack, world.isClient());
-        } else {
-            return TypedActionResult.fail(itemStack);
-        }
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+        ItemStack stack = player.getStackInHand(hand);
+        if (this.dropAllStoredItems(stack, player)) {
+            this.playDropContentsSound(player);
+            player.incrementStat(Stats.USED.getOrCreateStat(this));
+            return TypedActionResult.success(stack, world.isClient);
+        } else return TypedActionResult.fail(stack);
     }
 
     @Override
     public boolean isItemBarVisible(ItemStack stack) {
-        return getBundleOccupancy(stack) > 0;
+        return this.getStorageOccupancy(stack) > 0;
     }
 
     @Override
     public int getItemBarStep(ItemStack stack) {
-        return Math.min(1 + 12 * getBundleOccupancy(stack) / 112, 13);
+        return Math.min(1 + 12 * this.getStorageOccupancy(stack) / MAX_ITEMS, 13);
     }
 
     @Override
     public int getItemBarColor(ItemStack stack) {
-        return ITEM_BAR_COLOR;
+        return 0xFF6666;
     }
 
-    private static int addToBundle(ItemStack bundle, ItemStack stack) {
-        if (!stack.isEmpty() && stack.isIn(MushfindersItemTags.FORAGEABLES)) {
-            NbtCompound nbtCompound = bundle.getOrCreateNbt();
-            if (!nbtCompound.contains("Items")) {
-                nbtCompound.put("Items", new NbtList());
-            }
+    public int addToStorage(ItemStack stack, ItemStack nu) {
+        if (!nu.isEmpty() && nu.isIn(MushfindersItemTags.FORAGEABLES)) {
+            NbtCompound nbt = stack.getOrCreateNbt();
+            if (!nbt.contains(ITEMS_KEY)) nbt.put(ITEMS_KEY, new NbtList());
 
-            int i = getBundleOccupancy(bundle);
-            int j = getItemOccupancy(stack);
-            int k = Math.min(stack.getCount(), (112 - i) / j);
-            if (k == 0) {
+            int occb = this.getStorageOccupancy(stack);
+            int occi = this.getItemOccupancy(nu);
+            int in = Math.min(nu.getCount(), (MAX_ITEMS - occb) / occi);
+            if (in == 0) {
                 return 0;
             } else {
-                NbtList nbtList = nbtCompound.getList("Items", 10);
-                Optional<NbtCompound> optional = canMergeStack(stack, nbtList);
-                if (optional.isPresent()) {
-                    NbtCompound nbtCompound2 = optional.get();
-                    ItemStack itemStack = ItemStack.fromNbt(nbtCompound2);
-                    itemStack.increment(k);
-                    itemStack.writeNbt(nbtCompound2);
-                    nbtList.remove(nbtCompound2);
-                    nbtList.add(0, nbtCompound2);
+                NbtList items = nbt.getList(ITEMS_KEY, NbtElement.COMPOUND_TYPE);
+                Optional<NbtCompound> nbtmo = this.canMergeStack(nu, items);
+                if (nbtmo.isPresent()) {
+                    NbtCompound nbtm = nbtmo.get();
+                    ItemStack merged = this.fromNbt(nbtm);
+                    merged.increment(in);
+                    this.writeNbt(merged, nbtm);
+                    items.remove(nbtm);
+                    items.add(0, nbtm);
                 } else {
-                    ItemStack itemStack2 = stack.copy();
-                    itemStack2.setCount(k);
-                    NbtCompound nbtCompound3 = new NbtCompound();
-                    itemStack2.writeNbt(nbtCompound3);
-                    nbtList.add(0, nbtCompound3);
+                    ItemStack cstack = nu.copy();
+                    cstack.setCount(in);
+                    NbtCompound cnbt = new NbtCompound();
+                    this.writeNbt(cstack, cnbt);
+                    items.add(0, cnbt);
                 }
 
-                return k;
+                return in;
             }
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
-    private static Optional<NbtCompound> canMergeStack(ItemStack stack, NbtList items) {
-        if (stack.isOf(MushfindersItems.FORAGING_BASKET)) {
+    public Optional<NbtCompound> canMergeStack(ItemStack stack, NbtList list) {
+        if (stack.isOf(MushfindersItems.FORAGING_BASKET)) return Optional.empty();
+        Stream<NbtElement> items = list.stream().filter(NbtCompound.class::isInstance);
+        return items.map(NbtCompound.class::cast).filter(i -> ItemStack.canCombine(this.fromNbt(i), stack)).findFirst();
+    }
+
+    public int getItemOccupancy(ItemStack stack) {
+        return stack.isOf(MushfindersItems.FORAGING_BASKET) ? 4 + this.getStorageOccupancy(stack) : 1;
+    }
+
+    public int getStorageOccupancy(ItemStack stack) {
+        return this.getStoredStacks(stack).mapToInt(s -> this.getItemOccupancy(s) * s.getCount()).sum();
+    }
+
+    public Optional<ItemStack> removeFirstStack(ItemStack stack) {
+        NbtCompound nbt = stack.getOrCreateNbt();
+        if (!nbt.contains(ITEMS_KEY)) {
             return Optional.empty();
         } else {
-            Stream<NbtElement> var10000 = items.stream();
-            Objects.requireNonNull(NbtCompound.class);
-            var10000 = var10000.filter(NbtCompound.class::isInstance);
-            Objects.requireNonNull(NbtCompound.class);
-            return var10000.map(NbtCompound.class::cast).filter((item) -> ItemStack.canCombine(ItemStack.fromNbt(item), stack)).findFirst();
-        }
-    }
-
-    private static int getItemOccupancy(ItemStack stack) {
-        if (stack.isOf(MushfindersItems.FORAGING_BASKET)) {
-            return 4 + getBundleOccupancy(stack);
-        } else {
-            return 1;
-        }
-    }
-
-    private static int getBundleOccupancy(ItemStack stack) {
-        return getBundledStacks(stack).mapToInt((itemStack) -> getItemOccupancy(itemStack) * itemStack.getCount()).sum();
-    }
-
-    private static Optional<ItemStack> removeFirstStack(ItemStack stack) {
-        NbtCompound nbtCompound = stack.getOrCreateNbt();
-        if (!nbtCompound.contains("Items")) {
-            return Optional.empty();
-        } else {
-            NbtList nbtList = nbtCompound.getList("Items", 10);
-            if (nbtList.isEmpty()) {
+            NbtList items = nbt.getList(ITEMS_KEY, NbtElement.COMPOUND_TYPE);
+            if (items.isEmpty()) {
                 return Optional.empty();
             } else {
-                NbtCompound nbtCompound2 = nbtList.getCompound(0);
-                ItemStack itemStack = ItemStack.fromNbt(nbtCompound2);
-                nbtList.remove(0);
-                if (nbtList.isEmpty()) {
-                    stack.removeSubNbt("Items");
+                NbtCompound item = items.getCompound(0);
+                ItemStack first = this.fromNbt(item);
+                int max = first.getMaxCount();
+                int remainder = max - first.getCount();
+                if (remainder < 0) {
+                    first.setCount(max); // cap count
+                    item.putShort(COUNT_KEY, (short) -remainder); // fix listed count
+                } else {
+                    items.remove(0);
                 }
-
-                return Optional.of(itemStack);
+                if (items.isEmpty()) stack.removeSubNbt(ITEMS_KEY);
+                return Optional.of(first);
             }
         }
     }
 
-    private static boolean dropAllBundledItems(ItemStack stack, PlayerEntity player) {
-        NbtCompound nbtCompound = stack.getOrCreateNbt();
-        if (!nbtCompound.contains("Items")) {
-            return false;
-        } else {
-            if (player instanceof ServerPlayerEntity) {
-                NbtList nbtList = nbtCompound.getList("Items", 10);
+    public boolean dropAllStoredItems(ItemStack stack, PlayerEntity player) {
+        NbtCompound nbt = stack.getOrCreateNbt();
+        if (!nbt.contains(ITEMS_KEY)) return false;
 
-                for(int i = 0; i < nbtList.size(); ++i) {
-                    NbtCompound nbtCompound2 = nbtList.getCompound(i);
-                    ItemStack itemStack = ItemStack.fromNbt(nbtCompound2);
-                    player.dropItem(itemStack, true);
-                }
-            }
-
-            stack.removeSubNbt("Items");
-            return true;
+        if (player instanceof ServerPlayerEntity) {
+            Optional<ItemStack> drop = this.removeFirstStack(stack); // remove up to 64 until empty
+            do {
+                drop.ifPresent(s -> player.dropItem(s, true));
+                drop = this.removeFirstStack(stack);
+            } while (drop.isPresent());
         }
+
+        stack.removeSubNbt(ITEMS_KEY);
+        return true;
     }
 
-    private static Stream<ItemStack> getBundledStacks(ItemStack stack) {
-        NbtCompound nbtCompound = stack.getNbt();
-        if (nbtCompound == null) {
-            return Stream.empty();
-        } else {
-            NbtList nbtList = nbtCompound.getList("Items", 10);
-            Stream<NbtElement> var10000 = nbtList.stream();
-            Objects.requireNonNull(NbtCompound.class);
-            return var10000.map(NbtCompound.class::cast).map(ItemStack::fromNbt);
-        }
+    public Stream<ItemStack> getStoredStacks(ItemStack stack) {
+        NbtCompound nbt = stack.getNbt();
+        if (nbt == null) return Stream.empty();
+        NbtList items = nbt.getList(ITEMS_KEY, NbtElement.COMPOUND_TYPE);
+        return items.stream().map(NbtCompound.class::cast).map(this::fromNbt);
     }
 
     @Override
     public Optional<TooltipData> getTooltipData(ItemStack stack) {
-        DefaultedList<ItemStack> defaultedList = DefaultedList.of();
-        Stream<ItemStack> var10000 = getBundledStacks(stack);
-        Objects.requireNonNull(defaultedList);
-        var10000.forEach(defaultedList::add);
-        return Optional.of(new BundleTooltipData(defaultedList, getBundleOccupancy(stack)));
+        DefaultedList<ItemStack> inventory = DefaultedList.of();
+        this.getStoredStacks(stack).forEach(inventory::add);
+        return Optional.of(new ForagingBasketTooltipData(inventory, getStorageOccupancy(stack)));
     }
 
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-        tooltip.add((new TranslatableText("item.minecraft.bundle.fullness", getBundleOccupancy(stack), 112)).formatted(Formatting.GRAY));
+        tooltip.add(new TranslatableText("%s.fullness".formatted(this.getTranslationKey()), this.getStorageOccupancy(stack), MAX_ITEMS).formatted(Formatting.GRAY));
     }
 
     @Override
     public void onItemEntityDestroyed(ItemEntity entity) {
-        ItemUsage.spawnItemContents(entity, getBundledStacks(entity.getStack()));
+        World world = entity.world;
+        if (world.isClient) return;
+
+        ItemStack stack = entity.getStack();
+        Optional<ItemStack> drop = this.removeFirstStack(stack); // remove up to 64 until empty
+        do {
+            drop.ifPresent(s -> world.spawnEntity(new ItemEntity(world, entity.getX(), entity.getY(), entity.getZ(), s)));
+            drop = this.removeFirstStack(stack);
+        } while (drop.isPresent());
     }
 
-    private void playRemoveOneSound(Entity entity) {
+    public void playRemoveOneSound(Entity entity) {
         entity.playSound(SoundEvents.ITEM_BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
 
-    private void playInsertSound(Entity entity) {
+    public void playInsertSound(Entity entity) {
         entity.playSound(SoundEvents.ITEM_BUNDLE_INSERT, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
 
-    private void playDropContentsSound(Entity entity) {
+    public void playDropContentsSound(Entity entity) {
         entity.playSound(SoundEvents.ITEM_BUNDLE_DROP_CONTENTS, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
-}
 
+    public NbtCompound writeNbt(ItemStack stack, NbtCompound nbt) {
+        Identifier id = Registry.ITEM.getId(stack.getItem());
+        nbt.putString(ID_KEY, id == null ? AIR_ID : id.toString());
+        nbt.putShort(COUNT_KEY, (short) stack.getCount());
+        if (stack.getNbt() != null) {
+            nbt.put(TAGS_KEY, stack.getNbt().copy());
+        }
+        return nbt;
+    }
+
+    public ItemStack fromNbt(NbtCompound nbt) {
+        try {
+            Item item = Registry.ITEM.get(new Identifier(nbt.getString(ID_KEY)));
+            int count = nbt.getShort(COUNT_KEY);
+            ItemStack stack = new ItemStack(item, count);
+            if (nbt.contains(TAGS_KEY, NbtElement.COMPOUND_TYPE)) stack.setNbt(nbt.getCompound(TAGS_KEY));
+            return stack;
+        } catch (RuntimeException exception) { ItemStackAccessor.getLOGGER().debug("Tried to load invalid item: {}", nbt, exception); }
+        return ItemStack.EMPTY;
+    }
+}

@@ -8,22 +8,27 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.FlowerPotBlock;
 import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-@SuppressWarnings("unused")
-public class MushfindersBlocks {
-    public static final Block WHITE_PILLUP = register("white_pillup", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    public static final Block POTTED_WHITE_PILLUP = register("potted_white_pillup", new FlowerPotBlock(WHITE_PILLUP, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()));
+import java.util.function.BiFunction;
 
-    private static Block register(String id, Block block, boolean registerItem) {
-        Block registered = Registry.register(Registry.BLOCK, new Identifier(Mushfinders.MOD_ID, id), block);
-        if (registerItem) {
-            Registry.register(Registry.ITEM, new Identifier(Mushfinders.MOD_ID, id), new BlockItem(registered, new FabricItemSettings().group(Mushfinders.ITEM_GROUP)));
-        }
-        return registered;
+@SuppressWarnings("unused")
+public interface MushfindersBlocks {
+    Block WHITE_PILLUP = register("white_pillup", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
+    Block POTTED_WHITE_PILLUP = register("potted_white_pillup", new FlowerPotBlock(WHITE_PILLUP,
+        FabricBlockSettings.of(Material.DECORATION)
+                           .breakInstantly().nonOpaque()
+    ), null);
+
+    private static Block register(String id, Block block, BiFunction<Block, Item.Settings, Item> item) {
+        Identifier identifier = new Identifier(Mushfinders.MOD_ID, id);
+        if (item != null) Registry.register(Registry.ITEM, identifier, item.apply(block, new FabricItemSettings().group(Mushfinders.ITEM_GROUP)));
+        return Registry.register(Registry.BLOCK, identifier, block);
     }
+
     private static Block register(String id, Block block) {
-        return register(id, block, false);
+        return register(id, block, BlockItem::new);
     }
 }

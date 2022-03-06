@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " / ",
+    "/B/",
+    " O "
+  ],
+  "key": {
+    "/": {
+      "item": "minecraft:stick"
+    },
+    "B": {
+      "tag": "mushfinders:forageables"
+    },
+    "O": {
+      "item": "minecraft:bowl"
+    }
+  },
+  "result": {
+    "item": "mushfinders:foraging_basket"
+  }
+}

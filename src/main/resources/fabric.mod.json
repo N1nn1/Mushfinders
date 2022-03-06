@@ -4,35 +4,37 @@
   "version": "${version}",
 
   "name": "Mushfinders",
-  "description": "Mushrooms, Find em!",
+  "description": "Mushrooms, find 'em!",
   "authors": [
     "Ninni",
-    "HoboJoe"
+    "HoboJoe",
+    "Andante"
   ],
   "contact": {
-    "sources": "https://github.com/N1nn1/mushfinders"
+    "sources": "https://github.com/N1nn1/Mushfinders",
+    "issues": "https://github.com/N1nn1/Mushfinders/issues"
   },
 
-  "license": "CC0-1.0",
+  "license": [
+    "MIT (Code)",
+    "All Rights Reserved (Assets)"
+  ],
   "icon": "assets/mushfinders/icon.png",
 
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "com.ninni.mushfinders.Mushfinders"
-    ],
-    "client": [
-      "com.ninni.mushfinders.client.MushfindersClient"
-    ]
+    "main":     [ "com.ninni.mushfinders.Mushfinders" ],
+    "client":   [ "com.ninni.mushfinders.client.MushfindersClient" ],
+    "toymaker": [ "com.ninni.mushfinders.data.MushfindersToymaker" ]
   },
   "mixins": [
     "mushfinders.mixins.json"
   ],
 
   "depends": {
-    "fabricloader": ">=0.13.3",
-    "fabric": "*",
-    "minecraft": "1.18.x",
-    "java": ">=17"
+    "java": ">=17",
+    "minecraft": ">=1.18.2",
+    "fabricloader": ">=0.13",
+    "fabric": ">=0.47"
   }
 }

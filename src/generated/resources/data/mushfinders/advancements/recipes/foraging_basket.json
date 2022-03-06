@@ -1,0 +1,32 @@
+{
+  "parent": "mushfinders:recipes/root",
+  "rewards": {
+    "recipes": [
+      "mushfinders:foraging_basket"
+    ]
+  },
+  "criteria": {
+    "has_forageable": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "mushfinders:forageables"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "mushfinders:foraging_basket"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_forageable",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -24,39 +24,28 @@ public class MushfindersMushroomPlantBlock extends PlantBlock {
 
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        Vec3d vec3d = state.getModelOffset(world, pos);
-        return SHAPE.offset(vec3d.x, vec3d.y, vec3d.z);
+        Vec3d offset = state.getModelOffset(world, pos);
+        return SHAPE.offset(offset.x, offset.y, offset.z);
     }
 
     @Override
     public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         if (random.nextInt(25) == 0) {
-            int i = 5;
+            int hits = 5;
 
-            for (BlockPos blockPos : BlockPos.iterate(pos.add(-4, -1, -4), pos.add(4, 1, 4))) {
-                if (world.getBlockState(blockPos).isOf(this)) {
-                    --i;
-                    if (i <= 0) {
-                        return;
-                    }
-                }
+            for (BlockPos ipos : BlockPos.iterate(pos.add(-4, -1, -4), pos.add(4, 1, 4))) {
+                if (world.getBlockState(ipos).isOf(this)) if (hits-- <= 0) return;
             }
 
-            BlockPos blockPos2 = pos.add(random.nextInt(3) - 1, random.nextInt(2) - random.nextInt(2), random.nextInt(3) - 1);
+            BlockPos opos = pos.add(random.nextInt(3) - 1, random.nextInt(2) - random.nextInt(2), random.nextInt(3) - 1);
 
-            for(int k = 0; k < 4; ++k) {
-                if (world.isAir(blockPos2) && this.canSpreadAt(world, blockPos2)) {
-                    pos = blockPos2;
-                }
-
-                blockPos2 = pos.add(random.nextInt(3) - 1, random.nextInt(2) - random.nextInt(2), random.nextInt(3) - 1);
+            for (int i = 0; i < 4; ++i) {
+                if (world.isAir(opos) && this.canSpreadAt(world, opos)) pos = opos;
+                opos = pos.add(random.nextInt(3) - 1, random.nextInt(2) - random.nextInt(2), random.nextInt(3) - 1);
             }
 
-            if (world.isAir(blockPos2) && this.canSpreadAt(world, blockPos2)) {
-                world.setBlockState(blockPos2, state, 2);
-            }
+            if (world.isAir(opos) && this.canSpreadAt(world, opos)) world.setBlockState(opos, state, 2);
         }
-
     }
 
     @Override
@@ -70,12 +59,10 @@ public class MushfindersMushroomPlantBlock extends PlantBlock {
     }
 
     public boolean canSpreadAt(WorldView world, BlockPos pos) {
-        BlockPos blockPos = pos.down();
-        BlockState blockState = world.getBlockState(blockPos);
-        if (blockState.isIn(BlockTags.MUSHROOM_GROW_BLOCK)) {
+        BlockPos dpos = pos.down();
+        BlockState state = world.getBlockState(dpos);
+        if (state.isIn(BlockTags.MUSHROOM_GROW_BLOCK)) {
             return true;
-        } else {
-            return world.getBaseLightLevel(pos, 0) < 13 && this.canPlantOnTop(blockState, world, blockPos);
-        }
+        } else return world.getBaseLightLevel(pos, 0) < 13 && this.canPlantOnTop(state, world, dpos);
     }
 }
