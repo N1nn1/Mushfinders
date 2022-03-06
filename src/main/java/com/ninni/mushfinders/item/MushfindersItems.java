@@ -10,6 +10,7 @@ import net.minecraft.util.registry.Registry;
 
 @SuppressWarnings("unused")
 public class MushfindersItems {
+    public static final Item FORAGING_BASKET = register("foraging_basket", new ForagingBasketItem(new FabricItemSettings().maxCount(1).group(Mushfinders.ITEM_GROUP)));
     public static final Item WHITE_PILLUP = register("white_pillup", new BlockItem(MushfindersBlocks.WHITE_PILLUP, new FabricItemSettings().group(Mushfinders.ITEM_GROUP)));
 
     private static Item register(String id, Item item) {

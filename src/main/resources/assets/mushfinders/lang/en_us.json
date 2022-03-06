@@ -1,5 +1,7 @@
 {
   "itemGroup.mushfinders.item_group": "Mushfinders",
 
-  "block.mushfinders.white_pillup": "White Pillup"
+  "block.mushfinders.white_pillup": "White Pillup",
+
+  "item.mushfinders.foraging_basket": "Foraging Basket"
 }

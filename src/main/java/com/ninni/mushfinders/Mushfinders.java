@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 
 public class Mushfinders implements ModInitializer {
 	public static final String MOD_ID = "mushfinders";
-	public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(Mushfinders.MOD_ID, "item_group"), () -> new ItemStack(MushfindersBlocks.WHITE_PILLUP));
+	public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(Mushfinders.MOD_ID, "item_group"), () -> new ItemStack(MushfindersItems.FORAGING_BASKET));
 	//TODO make white pillups generate
 
 	@SuppressWarnings("UnstableApiUsage")

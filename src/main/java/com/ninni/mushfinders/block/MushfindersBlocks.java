@@ -14,7 +14,6 @@ import net.minecraft.util.registry.Registry;
 @SuppressWarnings("unused")
 public class MushfindersBlocks {
     public static final Block WHITE_PILLUP = register("white_pillup", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    //TODO make it fit into the minecraft tag for flower pots
     public static final Block POTTED_WHITE_PILLUP = register("potted_white_pillup", new FlowerPotBlock(WHITE_PILLUP, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()));
 
     private static Block register(String id, Block block, boolean registerItem) {
