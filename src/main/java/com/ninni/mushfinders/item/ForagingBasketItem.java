@@ -10,8 +10,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.StackReference;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsage;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -41,7 +39,6 @@ public class ForagingBasketItem extends Item {
     public static final String COUNT_KEY = "Count";
     public static final String TAGS_KEY = "tag";
     public static final String ID_KEY = "id";
-    public static final String AIR_ID = Registry.ITEM.getId(Items.AIR).toString();
 
     public ForagingBasketItem(Settings settings) {
         super(settings);
@@ -247,14 +244,13 @@ public class ForagingBasketItem extends Item {
         entity.playSound(SoundEvents.ITEM_BUNDLE_DROP_CONTENTS, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
 
-    public NbtCompound writeNbt(ItemStack stack, NbtCompound nbt) {
-        Identifier id = Registry.ITEM.getId(stack.getItem());
-        nbt.putString(ID_KEY, id == null ? AIR_ID : id.toString());
+    public void writeNbt(ItemStack stack, NbtCompound nbt) {
+        Item item = stack.getItem();
+        nbt.putString(ID_KEY, Registry.ITEM.getId(item).toString());
         nbt.putShort(COUNT_KEY, (short) stack.getCount());
         if (stack.getNbt() != null) {
             nbt.put(TAGS_KEY, stack.getNbt().copy());
         }
-        return nbt;
     }
 
     public ItemStack fromNbt(NbtCompound nbt) {
