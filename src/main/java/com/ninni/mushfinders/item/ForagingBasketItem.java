@@ -1,7 +1,10 @@
 package com.ninni.mushfinders.item;
 
 import com.ninni.mushfinders.mixin.ItemStackAccessor;
+import com.ninni.mushfinders.tag.MushfindersBlockTags;
 import com.ninni.mushfinders.tag.MushfindersItemTags;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.item.TooltipData;
 import net.minecraft.entity.Entity;
@@ -27,6 +30,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
@@ -95,6 +99,32 @@ public class ForagingBasketItem extends Item {
             player.incrementStat(Stats.USED.getOrCreateStat(this));
             return TypedActionResult.success(stack, world.isClient);
         } else return TypedActionResult.fail(stack);
+    }
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        PlayerEntity player = context.getPlayer();
+        if (!player.shouldCancelInteraction()) {
+            World world = context.getWorld();
+            BlockPos pos = context.getBlockPos();
+
+            BlockState state = world.getBlockState(pos);
+            Block block = state.getBlock();
+            Item item = block.asItem();
+            ItemStack stack = item.getDefaultStack();
+
+            if (stack.isIn(MushfindersItemTags.FORAGEABLES) && !state.isIn(MushfindersBlockTags.NO_PICKUP_FORAGEABLES)) {
+                ItemStack storage = context.getStack();
+                int in = this.addToStorage(storage, stack);
+                if (in > 0) {
+                    world.removeBlock(pos, false);
+                    this.playInsertSound(player);
+                    return ActionResult.success(world.isClient);
+                }
+            }
+        }
+
+        return super.useOnBlock(context);
     }
 
     @Override
