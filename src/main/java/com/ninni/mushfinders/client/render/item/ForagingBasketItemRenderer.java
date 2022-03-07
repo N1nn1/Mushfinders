@@ -95,10 +95,17 @@ public class ForagingBasketItemRenderer implements BuiltinItemRendererRegistry.D
 
             if (!mode.isFirstPerson()) {
                 matrices.multiply(Vec3f.POSITIVE_X.getRadialQuaternion(-90.0F));
-                matrices.translate(0.0F, -1.1F, -0.2F);
-            } else {
-                matrices.multiply(Vec3f.POSITIVE_X.getRadialQuaternion(180.0F));
-                matrices.translate(0.2F, -1.1F, 0.0F);
+                matrices.translate(0.0F, -1.3F, -0.15F);
+                matrices.scale(1.15F, 1.15F, 1.15F);
+            } else if (mode == ModelTransformation.Mode.FIRST_PERSON_RIGHT_HAND){
+                matrices.multiply(Vec3f.POSITIVE_X.getRadialQuaternion(198.25F));
+                matrices.multiply(Vec3f.NEGATIVE_Y.getRadialQuaternion(0.75F));
+                matrices.translate(0.0F, -1.3F, 0.1F);
+
+            } else if (mode == ModelTransformation.Mode.FIRST_PERSON_LEFT_HAND) {
+                matrices.multiply(Vec3f.POSITIVE_X.getRadialQuaternion(198.25F));
+                matrices.multiply(Vec3f.POSITIVE_Y.getRadialQuaternion(0.75F));
+                matrices.translate(0.0F, -1.3F, 0.1F);
             }
 
             Identifier texture = filled ? TEXTURE_FILLED : TEXTURE;
