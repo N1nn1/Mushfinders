@@ -7,7 +7,10 @@ import com.ninni.mushfinders.item.ForagingBasketItem;
 import com.ninni.mushfinders.item.MushfindersItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BuiltinItemRendererRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourceReloadListenerKeys;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.client.MinecraftClient;
@@ -24,6 +27,7 @@ import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3f;
 import net.minecraft.util.registry.Registry;
@@ -33,15 +37,27 @@ import java.util.Collections;
 
 @Environment(EnvType.CLIENT)
 public class ForagingBasketItemRenderer implements BuiltinItemRendererRegistry.DynamicItemRenderer, SimpleSynchronousResourceReloadListener {
+    public static final ForagingBasketItemRenderer INSTANCE = new ForagingBasketItemRenderer();
+
     public static final Identifier TEXTURE = new Identifier(Mushfinders.MOD_ID, "textures/entity/foraging_basket/foraging_basket.png");
     public static final Identifier TEXTURE_FILLED = new Identifier(Mushfinders.MOD_ID, "textures/entity/foraging_basket/foraging_basket_filled.png");
 
-    protected ItemRenderer itemRenderer;
-    protected ForagingBasketItemModel model;
-    protected BakedModel modelInventory, modelInventoryFilled;
-
     public static final ModelIdentifier MODEL_INVENTORY = makeModel("inventory");
     public static final ModelIdentifier MODEL_INVENTORY_FILLED = makeModel("inventory_filled");
+
+    protected MinecraftClient client;
+    protected BakedModel modelInventory, modelInventoryFilled;
+    protected ForagingBasketItemModel model;
+
+    public static void onInitializeClient() {
+        ModelLoadingRegistry.INSTANCE.registerModelProvider((manager, out) -> {
+            out.accept(MODEL_INVENTORY);
+            out.accept(MODEL_INVENTORY_FILLED);
+        });
+        FabricModelPredicateProviderRegistry.register(MushfindersItems.FORAGING_BASKET, new Identifier(Mushfinders.MOD_ID, "foraging_basket_filled"), ForagingBasketItemRenderer::filled);
+        BuiltinItemRendererRegistry.INSTANCE.register(MushfindersItems.FORAGING_BASKET, INSTANCE);
+        ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(INSTANCE);
+    }
 
     @Override
     public Identifier getFabricId() {
@@ -50,14 +66,14 @@ public class ForagingBasketItemRenderer implements BuiltinItemRendererRegistry.D
 
     @Override
     public void reload(ResourceManager manager) {
-        MinecraftClient client = MinecraftClient.getInstance();
-        EntityModelLoader modelLoader = client.getEntityModelLoader();
-        BakedModelManager models = client.getBakedModelManager();
+        this.client = MinecraftClient.getInstance();
 
-        this.itemRenderer = client.getItemRenderer();
-        this.model = new ForagingBasketItemModel(modelLoader.getModelPart(MushfindersEntityModelLayers.FORAGING_BASKET));
+        BakedModelManager models = this.client.getBakedModelManager();
         this.modelInventory = models.getModel(MODEL_INVENTORY);
         this.modelInventoryFilled = models.getModel(MODEL_INVENTORY_FILLED);
+
+        EntityModelLoader modelLoader = this.client.getEntityModelLoader();
+        this.model = new ForagingBasketItemModel(modelLoader.getModelPart(MushfindersEntityModelLayers.FORAGING_BASKET));
     }
 
     @Override
@@ -69,9 +85,10 @@ public class ForagingBasketItemRenderer implements BuiltinItemRendererRegistry.D
     public void render(ItemStack stack, ModelTransformation.Mode mode, MatrixStack matrices, VertexConsumerProvider vertices, int light, int overlay) {
         boolean filled = filled(stack);
         if (mode == ModelTransformation.Mode.GUI || mode == ModelTransformation.Mode.GROUND || mode == ModelTransformation.Mode.FIXED) {
-            matrices.pop(); // cancel the previous transformation and pray that we are not breaking the state
+            matrices.pop();
             matrices.push();
-            this.itemRenderer.renderItem(stack, mode, false, matrices, vertices, light, overlay, filled ? this.modelInventoryFilled : this.modelInventory);
+            ItemRenderer itemRenderer = this.client.getItemRenderer();
+            itemRenderer.renderItem(stack, mode, false, matrices, vertices, light, overlay, filled ? this.modelInventoryFilled : this.modelInventory);
         } else {
             matrices.pop();
             matrices.push();
@@ -93,16 +110,16 @@ public class ForagingBasketItemRenderer implements BuiltinItemRendererRegistry.D
         }
     }
 
+    public static ModelIdentifier makeModel(String suffix) {
+        Identifier id = Registry.ITEM.getId(MushfindersItems.FORAGING_BASKET);
+        return new ModelIdentifier("%s_%s".formatted(id, suffix), "inventory");
+    }
+
     public static boolean filled(ItemStack stack) {
         return stack.getItem() instanceof ForagingBasketItem item && item.getStorageOccupancy(stack) > 0;
     }
 
     public static float filled(ItemStack stack, ClientWorld world, LivingEntity entity, int seed) {
         return filled(stack) ? 1 : 0;
-    }
-
-    private static ModelIdentifier makeModel(String suffix) {
-        Identifier id = Registry.ITEM.getId(MushfindersItems.FORAGING_BASKET);
-        return new ModelIdentifier("%s_%s".formatted(id, suffix), "inventory");
     }
 }
