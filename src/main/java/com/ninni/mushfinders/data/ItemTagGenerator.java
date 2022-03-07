@@ -32,7 +32,16 @@ public class ItemTagGenerator extends AbstractTagGenerator<Item> {
             Items.WARPED_FUNGUS,
             Items.TALL_GRASS,
             Items.LARGE_FERN,
-            MushfindersBlocks.WHITE_PILLUP.asItem()
+            MushfindersBlocks.WHITE_PILLUP.asItem(),
+            MushfindersBlocks.BROWN_PILLUP.asItem(),
+            MushfindersBlocks.CRIMSON_PLUMP.asItem(),
+            MushfindersBlocks.DISHCAP.asItem(),
+            MushfindersBlocks.GOADSTOOL.asItem(),
+            MushfindersBlocks.HELBRIM.asItem(),
+            MushfindersBlocks.ROYAL_BEND.asItem(),
+            MushfindersBlocks.SULFUR_BOLETE.asItem(),
+            MushfindersBlocks.TOQUESWAB.asItem(),
+            MushfindersBlocks.WARPFUNNEL.asItem()
         ).add(ItemTags.SAPLINGS, ItemTags.SMALL_FLOWERS, ItemTags.TALL_FLOWERS);
     }
 }

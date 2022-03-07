@@ -3,6 +3,15 @@
   "itemGroup.mushfinders.item_group": "Mushfinders",
 
   "block.mushfinders.white_pillup": "White Pillup",
+  "block.mushfinders.brown_pillup": "Brown Pillup",
+  "block.mushfinders.crimson_plump": "Crimson Plump",
+  "block.mushfinders.dishcap": "Dishcap",
+  "block.mushfinders.goadstool": "Goadstool",
+  "block.mushfinders.helbrim": "Helbrim",
+  "block.mushfinders.royal_bend": "Royal Bend",
+  "block.mushfinders.sulfur_bolete": "Sulfur Bolete",
+  "block.mushfinders.toqueswab": "Toqueswab",
+  "block.mushfinders.warpfunnel": "Warpfunnel",
 
   "item.mushfinders.foraging_basket": "Foraging Basket",
   "item.mushfinders.foraging_basket.fullness": "%s/%s"

@@ -17,5 +17,14 @@ public class ItemModelGenerator extends AbstractItemModelGenerator {
         this.add(name(FORAGING_BASKET, "%s_inventory_filled"), InheritingModelGen.generated(name(FORAGING_BASKET, "item/%s_filled")));
 
         this.generated(WHITE_PILLUP);
+        this.generated(BROWN_PILLUP);
+        this.generated(CRIMSON_PLUMP);
+        this.generated(DISHCAP);
+        this.generated(GOADSTOOL);
+        this.generated(HELBRIM);
+        this.generated(ROYAL_BEND);
+        this.generated(SULFUR_BOLETE);
+        this.generated(TOQUESWAB);
+        this.generated(WARPFUNNEL);
     }
 }

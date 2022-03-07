@@ -27,7 +27,26 @@ public class MushfindersClient implements ClientModInitializer {
         BlockRenderLayerMap brlm = BlockRenderLayerMap.INSTANCE;
         brlm.putBlocks(RenderLayer.getCutout(),
             MushfindersBlocks.WHITE_PILLUP,
-            MushfindersBlocks.POTTED_WHITE_PILLUP
+            MushfindersBlocks.BROWN_PILLUP,
+            MushfindersBlocks.CRIMSON_PLUMP,
+            MushfindersBlocks.DISHCAP,
+            MushfindersBlocks.GOADSTOOL,
+            MushfindersBlocks.HELBRIM,
+            MushfindersBlocks.ROYAL_BEND,
+            MushfindersBlocks.SULFUR_BOLETE,
+            MushfindersBlocks.TOQUESWAB,
+            MushfindersBlocks.WARPFUNNEL,
+
+            MushfindersBlocks.POTTED_WHITE_PILLUP,
+            MushfindersBlocks.POTTED_BROWN_PILLUP,
+            MushfindersBlocks.POTTED_CRIMSON_PLUMP,
+            MushfindersBlocks.POTTED_DISHCAP,
+            MushfindersBlocks.POTTED_GOADSTOOL,
+            MushfindersBlocks.POTTED_HELBRIM,
+            MushfindersBlocks.POTTED_ROYAL_BEND,
+            MushfindersBlocks.POTTED_SULFUR_BOLETE,
+            MushfindersBlocks.POTTED_TOQUESWAB,
+            MushfindersBlocks.POTTED_WARPFUNNEL
         );
     }
 }
