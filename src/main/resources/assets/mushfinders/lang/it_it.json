@@ -1,4 +1,14 @@
 {
-  "block.mushfinders.white_pillup": "Pillup bianco",
+  "block.mushfinders.white_pillup": "Fungo affusolato bianco",
+  "block.mushfinders.brown_pillup": "Fungo affusolato marrone",
+  "block.mushfinders.crimson_plump": "Fungo polpa cremisi",
+  "block.mushfinders.dishcap": "Fungo cappella piatta",
+  "block.mushfinders.goadstool": "Fungo gambo viola",
+  "block.mushfinders.helbrim": "Fungo teso",
+  "block.mushfinders.royal_bend": "Fungo reale",
+  "block.mushfinders.sulfur_bolete": "Fungo sulfurico",
+  "block.mushfinders.toqueswab": "Fungo cappello",
+  "block.mushfinders.warpfunnel": "Fungo imbuto distorto",
+
   "item.mushfinders.foraging_basket": "Cesto"
 }

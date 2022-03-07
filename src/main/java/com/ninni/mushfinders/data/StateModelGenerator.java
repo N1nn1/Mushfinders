@@ -28,7 +28,7 @@ public class StateModelGenerator extends AbstractStateModelGenerator {
         this.add(POTTED_CRIMSON_PLUMP, b -> this.simple(name(b), flowerPotCross(name(CRIMSON_PLUMP))));
         this.add(POTTED_DISHCAP, b -> this.simple(name(b), flowerPotCross(name(DISHCAP))));
         this.add(POTTED_GOADSTOOL, b -> this.simple(name(b), flowerPotCross(name(GOADSTOOL))));
-        this.add(POTTED_HELBRIM, b -> this.simple(name(b), flowerPotCross(name(HELBRIM))));
+        this.add(POTTED_HELBRIM, b -> this.simple(name(b), flowerPotCross(name(POTTED_HELBRIM))));
         this.add(POTTED_ROYAL_BEND, b -> this.simple(name(b), flowerPotCross(name(ROYAL_BEND))));
         this.add(POTTED_SULFUR_BOLETE, b -> this.simple(name(b), flowerPotCross(name(SULFUR_BOLETE))));
         this.add(POTTED_TOQUESWAB, b -> this.simple(name(b), flowerPotCross(name(TOQUESWAB))));
