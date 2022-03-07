@@ -1,6 +1,7 @@
 package com.ninni.mushfinders.item;
 
 import com.ninni.mushfinders.mixin.ItemStackAccessor;
+import com.ninni.mushfinders.sound.MushfindersSoundEvents;
 import com.ninni.mushfinders.tag.MushfindersBlockTags;
 import com.ninni.mushfinders.tag.MushfindersItemTags;
 import net.minecraft.block.Block;
@@ -104,7 +105,7 @@ public class ForagingBasketItem extends Item {
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         PlayerEntity player = context.getPlayer();
-        if (!player.shouldCancelInteraction()) {
+        if (player != null && !player.shouldCancelInteraction()) {
             World world = context.getWorld();
             BlockPos pos = context.getBlockPos();
 
@@ -118,7 +119,7 @@ public class ForagingBasketItem extends Item {
                 int in = this.addToStorage(storage, stack);
                 if (in > 0) {
                     world.removeBlock(pos, false);
-                    this.playInsertSound(player);
+                    this.playPickupSound(player);
                     return ActionResult.success(world.isClient);
                 }
             }
@@ -273,7 +274,11 @@ public class ForagingBasketItem extends Item {
     }
 
     public void playDropContentsSound(Entity entity) {
-        entity.playSound(SoundEvents.ITEM_BUNDLE_DROP_CONTENTS, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+        entity.playSound(MushfindersSoundEvents.ITEM_FORAGING_BASKET_EMPTIES, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+    }
+
+    public void playPickupSound(Entity entity) {
+        entity.playSound(MushfindersSoundEvents.ITEM_FORAGING_BASKET_PICKUP, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
 
     public void writeNbt(ItemStack stack, NbtCompound nbt) {

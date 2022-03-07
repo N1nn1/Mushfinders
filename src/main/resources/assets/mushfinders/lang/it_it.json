@@ -10,5 +10,8 @@
   "block.mushfinders.toqueswab": "Fungo cappello",
   "block.mushfinders.warpfunnel": "Fungo imbuto distorto",
 
-  "item.mushfinders.foraging_basket": "Cesto"
+  "item.mushfinders.foraging_basket": "Cesto",
+
+  "subtitles.item.foraging_basket.pickup": "Oggetto viene riposto nel cesto",
+  "subtitles.item.foraging_basket.empties": "Cesto viene svuotato"
 }

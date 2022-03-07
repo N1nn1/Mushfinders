@@ -1,0 +1,18 @@
+{
+  "item.foraging_basket.pickup": {
+    "sounds": [
+      "mushfinders:item/foraging_basket/pickup1",
+      "mushfinders:item/foraging_basket/pickup2",
+      "mushfinders:item/foraging_basket/pickup3"
+    ],
+    "subtitle": "subtitles.item.foraging_basket.pickup"
+  },
+  "item.foraging_basket.empties": {
+    "sounds": [
+      "minecraft:item/bundle/drop_contents1",
+      "minecraft:item/bundle/drop_contents2",
+      "minecraft:item/bundle/drop_contents3"
+    ],
+    "subtitle": "subtitles.item.foraging_basket.empties"
+  }
+}

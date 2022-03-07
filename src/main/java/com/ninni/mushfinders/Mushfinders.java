@@ -3,6 +3,7 @@ package com.ninni.mushfinders;
 import com.google.common.reflect.Reflection;
 import com.ninni.mushfinders.block.MushfindersBlocks;
 import com.ninni.mushfinders.item.MushfindersItems;
+import com.ninni.mushfinders.sound.MushfindersSoundEvents;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -22,7 +23,7 @@ public class Mushfinders implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Initializing {}", MOD_NAME);
-		Reflection.initialize(MushfindersItems.class, MushfindersBlocks.class);
+		Reflection.initialize(MushfindersItems.class, MushfindersBlocks.class, MushfindersSoundEvents.class);
 		LOGGER.info("Initialized {}", MOD_NAME);
 	}
 }

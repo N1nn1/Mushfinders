@@ -14,5 +14,8 @@
   "block.mushfinders.warpfunnel": "Warpfunnel",
 
   "item.mushfinders.foraging_basket": "Foraging Basket",
-  "item.mushfinders.foraging_basket.fullness": "%s/%s"
+  "item.mushfinders.foraging_basket.fullness": "%s/%s",
+
+  "subtitles.item.foraging_basket.pickup": "Item gets stuffed in a basket",
+  "subtitles.item.foraging_basket.empties": "Basket empties"
 }
