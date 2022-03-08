@@ -14,61 +14,66 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.function.BiFunction;
 
-@SuppressWarnings("unused")
 public interface MushfindersBlocks {
-    //normal mushrooms
-    Block AZURE_SKIRT = register("azure_skirt", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block WHITE_PILLUP = register("white_pillup", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block BROWN_PILLUP = register("brown_pillup", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block CRIMSON_PLUMP = register("crimson_plump", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block DISHCAP = register("dishcap", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block GOADSTOOL = register("goadstool", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block HELBRIM = register("helbrim", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block MARITOLD = register("maritold", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block ROYAL_BEND = register("royal_bend", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block STRIPED_LUMINO = register("striped_lumino", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block SULFUR_BOLETE = register("sulfur_bolete", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block TOQUESWAB = register("toqueswab", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block WARPFUNNEL = register("warpfunnel", new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    //taller mushrooms
-    Block CATSBANE = register("catsbane", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block DUKES_PLUMP = register("dukes_plump", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block DUNGWILT = register("dungwilt", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block GNOME_HEAD = register("gnome_head", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block HEDGEKING = register("hedgeking", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block INKWEEP = register("inkweep", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block SALMONOKI = register("salmonoki", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block SNAGGLEHORN = register("snagglehorn", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block SWINGBULB = register("swingbulb", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block THROATBINDER = register("throatbinder", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
-    Block WAX_STACK = register("wax_stack", new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
+    /* Mushrooms */
 
-    //normal potted mushrooms
-    Block POTTED_AZURE_SKIRT = register("potted_azure_skirt", new FlowerPotBlock(AZURE_SKIRT, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_WHITE_PILLUP = register("potted_white_pillup", new FlowerPotBlock(WHITE_PILLUP, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_BROWN_PILLUP = register("potted_brown_pillup", new FlowerPotBlock(BROWN_PILLUP, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_CRIMSON_PLUMP = register("potted_crimson_plump", new FlowerPotBlock(CRIMSON_PLUMP, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_DISHCAP = register("potted_dishcap", new FlowerPotBlock(DISHCAP, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_GOADSTOOL = register("potted_goadstool", new FlowerPotBlock(GOADSTOOL, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_HELBRIM = register("potted_helbrim", new FlowerPotBlock(HELBRIM, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_MARITOLD = register("potted_maritold", new FlowerPotBlock(MARITOLD, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_ROYAL_BEND = register("potted_royal_bend", new FlowerPotBlock(ROYAL_BEND, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_STRIPED_LUMINO = register("potted_striped_lumino", new FlowerPotBlock(STRIPED_LUMINO, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_SULFUR_BOLETE = register("potted_sulfur_bolete", new FlowerPotBlock(SULFUR_BOLETE, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_TOQUESWAB = register("potted_toqueswab", new FlowerPotBlock(TOQUESWAB, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_WARPFUNNEL = register("potted_warpfunnel", new FlowerPotBlock(WARPFUNNEL, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    //taller potted mushrooms
-    Block POTTED_CATSBANE = register("potted_catsbane", new FlowerPotBlock(CATSBANE, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_DUKES_PLUMP = register("potted_dukes_plump", new FlowerPotBlock(DUKES_PLUMP, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_DUNGWILT = register("potted_dungwilt", new FlowerPotBlock(DUNGWILT, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_GNOME_HEAD = register("potted_gnome_head", new FlowerPotBlock(GNOME_HEAD, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_HEDGEKING = register("potted_hedgeking", new FlowerPotBlock(HEDGEKING, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_INKWEEP = register("potted_inkweep", new FlowerPotBlock(INKWEEP, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_SALMONOKI = register("potted_salmonoki", new FlowerPotBlock(SALMONOKI, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_SNAGGLEHORN = register("potted_snagglehorn", new FlowerPotBlock(SNAGGLEHORN, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_SWINGBULB = register("potted_swingbulb", new FlowerPotBlock(SWINGBULB, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_THROATBINDER = register("potted_throatbinder", new FlowerPotBlock(THROATBINDER, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
-    Block POTTED_WAX_STACK = register("potted_wax_stack", new FlowerPotBlock(WAX_STACK, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
+    Block AZURE_SKIRT = registerMushroom("azure_skirt");
+    Block WHITE_PILLUP = registerMushroom("white_pillup");
+    Block BROWN_PILLUP = registerMushroom("brown_pillup");
+    Block CRIMSON_PLUMP = registerMushroom("crimson_plump");
+    Block DISHCAP = registerMushroom("dishcap");
+    Block GOADSTOOL = registerMushroom("goadstool");
+    Block HELBRIM = registerMushroom("helbrim");
+    Block MARITOLD = registerMushroom("maritold");
+    Block ROYAL_BEND = registerMushroom("royal_bend");
+    Block STRIPED_LUMINO = registerMushroom("striped_lumino");
+    Block SULFUR_BOLETE = registerMushroom("sulfur_bolete");
+    Block TOQUESWAB = registerMushroom("toqueswab");
+    Block WARPFUNNEL = registerMushroom("warpfunnel");
+
+    /* Taller Mushrooms */
+
+    Block CATSBANE = registerTallMushroom("catsbane");
+    Block DUKES_PLUMP = registerTallMushroom("dukes_plump");
+    Block DUNGWILT = registerTallMushroom("dungwilt");
+    Block GNOME_HEAD = registerTallMushroom("gnome_head");
+    Block HEDGEKING = registerTallMushroom("hedgeking");
+    Block INKWEEP = registerTallMushroom("inkweep");
+    Block SALMONOKI = registerTallMushroom("salmonoki");
+    Block SNAGGLEHORN = registerTallMushroom("snagglehorn");
+    Block SWINGBULB = registerTallMushroom("swingbulb");
+    Block THROATBINDER = registerTallMushroom("throatbinder");
+    Block WAX_STACK = registerTallMushroom("wax_stack");
+
+    /* Potted Mushrooms */
+
+    Block POTTED_AZURE_SKIRT = registerFlowerPot("potted_azure_skirt", AZURE_SKIRT);
+    Block POTTED_WHITE_PILLUP = registerFlowerPot("potted_white_pillup", WHITE_PILLUP);
+    Block POTTED_BROWN_PILLUP = registerFlowerPot("potted_brown_pillup", BROWN_PILLUP);
+    Block POTTED_CRIMSON_PLUMP = registerFlowerPot("potted_crimson_plump", CRIMSON_PLUMP);
+    Block POTTED_DISHCAP = registerFlowerPot("potted_dishcap", DISHCAP);
+    Block POTTED_GOADSTOOL = registerFlowerPot("potted_goadstool", GOADSTOOL);
+    Block POTTED_HELBRIM = registerFlowerPot("potted_helbrim", HELBRIM);
+    Block POTTED_MARITOLD = registerFlowerPot("potted_maritold", MARITOLD);
+    Block POTTED_ROYAL_BEND = registerFlowerPot("potted_royal_bend", ROYAL_BEND);
+    Block POTTED_STRIPED_LUMINO = registerFlowerPot("potted_striped_lumino", STRIPED_LUMINO);
+    Block POTTED_SULFUR_BOLETE = registerFlowerPot("potted_sulfur_bolete", SULFUR_BOLETE);
+    Block POTTED_TOQUESWAB = registerFlowerPot("potted_toqueswab", TOQUESWAB);
+    Block POTTED_WARPFUNNEL = registerFlowerPot("potted_warpfunnel", WARPFUNNEL);
+
+    /* Taller Potted Mushrooms */
+
+    Block POTTED_CATSBANE = registerFlowerPot("potted_catsbane", CATSBANE);
+    Block POTTED_DUKES_PLUMP = registerFlowerPot("potted_dukes_plump", DUKES_PLUMP);
+    Block POTTED_DUNGWILT = registerFlowerPot("potted_dungwilt", DUNGWILT);
+    Block POTTED_GNOME_HEAD = registerFlowerPot("potted_gnome_head", GNOME_HEAD);
+    Block POTTED_HEDGEKING = registerFlowerPot("potted_hedgeking", HEDGEKING);
+    Block POTTED_INKWEEP = registerFlowerPot("potted_inkweep", INKWEEP);
+    Block POTTED_SALMONOKI = registerFlowerPot("potted_salmonoki", SALMONOKI);
+    Block POTTED_SNAGGLEHORN = registerFlowerPot("potted_snagglehorn", SNAGGLEHORN);
+    Block POTTED_SWINGBULB = registerFlowerPot("potted_swingbulb", SWINGBULB);
+    Block POTTED_THROATBINDER = registerFlowerPot("potted_throatbinder", THROATBINDER);
+    Block POTTED_WAX_STACK = registerFlowerPot("potted_wax_stack", WAX_STACK);
 
     private static Block register(String id, Block block, BiFunction<Block, Item.Settings, Item> item) {
         Identifier identifier = new Identifier(Mushfinders.MOD_ID, id);
@@ -78,5 +83,17 @@ public interface MushfindersBlocks {
 
     private static Block register(String id, Block block) {
         return register(id, block, BlockItem::new);
+    }
+
+    private static Block registerMushroom(String id) {
+        return register(id, new MushfindersMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
+    }
+
+    private static Block registerTallMushroom(String id) {
+        return register(id, new MushfindersTallMushroomPlantBlock(FabricBlockSettings.copyOf(Blocks.RED_MUSHROOM)));
+    }
+
+    private static Block registerFlowerPot(String id, Block flower) {
+        return register(id, new FlowerPotBlock(flower, FabricBlockSettings.of(Material.DECORATION).breakInstantly().nonOpaque()), null);
     }
 }
