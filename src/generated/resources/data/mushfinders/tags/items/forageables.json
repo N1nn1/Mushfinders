@@ -17,6 +17,9 @@
     "minecraft:warped_fungus",
     "minecraft:tall_grass",
     "minecraft:large_fern",
+    "#minecraft:saplings",
+    "#minecraft:small_flowers",
+    "#minecraft:tall_flowers",
     "mushfinders:white_pillup",
     "mushfinders:brown_pillup",
     "mushfinders:crimson_plump",
@@ -40,9 +43,6 @@
     "mushfinders:striped_lumino",
     "mushfinders:swingbulb",
     "mushfinders:throatbinder",
-    "mushfinders:wax_stack",
-    "#minecraft:saplings",
-    "#minecraft:small_flowers",
-    "#minecraft:tall_flowers"
+    "mushfinders:wax_stack"
   ]
 }
