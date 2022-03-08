@@ -16,6 +16,7 @@ public class MushfindersToymaker implements ToymakerEntrypoint {
         StateModelGeneratorStore.register(() -> new StateModelGenerator(Mushfinders.MOD_ID));
         TagGeneratorStore.register(() -> new ItemTagGenerator(Mushfinders.MOD_ID));
         TagGeneratorStore.register(() -> new BlockTagGenerator(Mushfinders.MOD_ID));
+        TagGeneratorStore.register(() -> new BiomeTagGenerator(Mushfinders.MOD_ID));
         RecipeGeneratorStore.register(() -> new RecipeGenerator(Mushfinders.MOD_ID));
         LootGeneratorStore.register(() -> new BlockLootTableGenerator(Mushfinders.MOD_ID), LootContextTypes.BLOCK);
     }

@@ -4,7 +4,8 @@
   "package": "com.ninni.mushfinders.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ItemStackAccessor"
+    "ItemStackAccessor",
+    "VegetationPlacedFeaturesInvoker"
   ],
   "client": [
     "client.BundleTooltipComponentAccessor"
