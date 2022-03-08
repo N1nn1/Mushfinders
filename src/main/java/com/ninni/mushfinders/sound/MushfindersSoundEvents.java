@@ -6,8 +6,10 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public interface MushfindersSoundEvents {
+    SoundEvent ITEM_FORAGING_BASKET_REMOVE_ONE = foragingBasket("remove_one");
+    SoundEvent ITEM_FORAGING_BASKET_INSERT = foragingBasket("insert");
     SoundEvent ITEM_FORAGING_BASKET_PICKUP = foragingBasket("pickup");
-    SoundEvent ITEM_FORAGING_BASKET_EMPTIES = foragingBasket("empties");
+    SoundEvent ITEM_FORAGING_BASKET_DROP_CONTENTS = foragingBasket("drop_contents");
     private static SoundEvent foragingBasket(String id) {
         return item("foraging_basket", id);
     }

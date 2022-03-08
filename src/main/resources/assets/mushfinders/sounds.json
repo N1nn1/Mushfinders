@@ -1,18 +1,46 @@
 {
+  "item.foraging_basket.insert": {
+    "sounds": [
+      "minecraft:item/bundle/insert1",
+      { "name": "minecraft:item/bundle/insert1", "pitch": 0.95 },
+      { "name": "minecraft:item/bundle/insert1", "pitch": 1.05 },
+      "minecraft:item/bundle/insert2",
+      { "name": "minecraft:item/bundle/insert2", "pitch": 0.95 },
+      { "name": "minecraft:item/bundle/insert2", "pitch": 1.05 },
+      "minecraft:item/bundle/insert3",
+      { "name": "minecraft:item/bundle/insert3", "pitch": 0.95 },
+      { "name": "minecraft:item/bundle/insert3", "pitch": 1.05 }
+    ],
+    "subtitle": "subtitles.item.mushfinders.foraging_basket.insert"
+  },
+  "item.foraging_basket.remove_one": {
+    "sounds": [
+      "minecraft:item/bundle/remove_one1",
+      { "name": "minecraft:item/bundle/remove_one1", "pitch": 1.05 },
+      { "name": "minecraft:item/bundle/remove_one1", "pitch": 1.1 },
+      "minecraft:item/bundle/remove_one2",
+      { "name": "minecraft:item/bundle/remove_one2", "pitch": 1.05 },
+      { "name": "minecraft:item/bundle/remove_one2", "pitch": 1.1 },
+      "minecraft:item/bundle/remove_one3",
+      { "name": "minecraft:item/bundle/remove_one3", "pitch": 1.05 },
+      { "name": "minecraft:item/bundle/remove_one3", "pitch": 1.1 }
+    ],
+    "subtitle": "subtitles.item.mushfinders.foraging_basket.remove_one"
+  },
   "item.foraging_basket.pickup": {
     "sounds": [
       "mushfinders:item/foraging_basket/pickup1",
       "mushfinders:item/foraging_basket/pickup2",
       "mushfinders:item/foraging_basket/pickup3"
     ],
-    "subtitle": "subtitles.item.foraging_basket.pickup"
+    "subtitle": "subtitles.item.mushfinders.foraging_basket.pickup"
   },
-  "item.foraging_basket.empties": {
+  "item.foraging_basket.drop_contents": {
     "sounds": [
       "minecraft:item/bundle/drop_contents1",
       "minecraft:item/bundle/drop_contents2",
       "minecraft:item/bundle/drop_contents3"
     ],
-    "subtitle": "subtitles.item.foraging_basket.empties"
+    "subtitle": "subtitles.item.mushfinders.foraging_basket.drop_contents"
   }
 }

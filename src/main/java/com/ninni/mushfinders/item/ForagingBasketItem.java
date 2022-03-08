@@ -20,7 +20,6 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.stat.Stats;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -266,15 +265,15 @@ public class ForagingBasketItem extends Item {
     }
 
     public void playRemoveOneSound(Entity entity) {
-        entity.playSound(SoundEvents.ITEM_BUNDLE_REMOVE_ONE, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+        entity.playSound(MushfindersSoundEvents.ITEM_FORAGING_BASKET_REMOVE_ONE, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
 
     public void playInsertSound(Entity entity) {
-        entity.playSound(SoundEvents.ITEM_BUNDLE_INSERT, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+        entity.playSound(MushfindersSoundEvents.ITEM_FORAGING_BASKET_INSERT, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
 
     public void playDropContentsSound(Entity entity) {
-        entity.playSound(MushfindersSoundEvents.ITEM_FORAGING_BASKET_EMPTIES, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
+        entity.playSound(MushfindersSoundEvents.ITEM_FORAGING_BASKET_DROP_CONTENTS, 0.8F, 0.8F + entity.getWorld().getRandom().nextFloat() * 0.4F);
     }
 
     public void playPickupSound(Entity entity) {

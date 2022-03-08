@@ -26,6 +26,8 @@
 
   "item.mushfinders.foraging_basket": "Cesto",
 
-  "subtitles.item.foraging_basket.pickup": "Oggetto viene riposto nel cesto",
-  "subtitles.item.foraging_basket.empties": "Cesto viene svuotato"
+  "subtitles.item.mushfinders.foraging_basket.insert": "Oggetto inserito",
+  "subtitles.item.mushfinders.foraging_basket.remove_one": "Oggetto rimosso",
+  "subtitles.item.mushfinders.foraging_basket.pickup": "Oggetto viene riposto nel cesto",
+  "subtitles.item.mushfinders.foraging_basket.drop_contents": "Cesto viene svuotato"
 }

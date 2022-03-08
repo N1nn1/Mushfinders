@@ -30,6 +30,8 @@
   "item.mushfinders.foraging_basket": "Foraging Basket",
   "item.mushfinders.foraging_basket.fullness": "%s/%s",
 
-  "subtitles.item.foraging_basket.pickup": "Item gets stuffed in a basket",
-  "subtitles.item.foraging_basket.empties": "Basket empties"
+  "subtitles.item.mushfinders.foraging_basket.insert": "Item packed",
+  "subtitles.item.mushfinders.foraging_basket.remove_one": "Item unpacked",
+  "subtitles.item.mushfinders.foraging_basket.pickup": "Item gets stuffed in a basket",
+  "subtitles.item.mushfinders.foraging_basket.drop_contents": "Basket empties"
 }
