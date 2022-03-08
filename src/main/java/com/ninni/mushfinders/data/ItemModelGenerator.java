@@ -26,5 +26,19 @@ public class ItemModelGenerator extends AbstractItemModelGenerator {
         this.generated(SULFUR_BOLETE);
         this.generated(TOQUESWAB);
         this.generated(WARPFUNNEL);
+        this.generated(AZURE_SKIRT);
+        this.generated(CATSBANE);
+        this.generated(DUKES_PLUMP);
+        this.generated(DUNGWILT);
+        this.generated(GNOME_HEAD);
+        this.generated(HEDGEKING);
+        this.generated(INKWEEP);
+        this.generated(MARITOLD);
+        this.generated(SALMONOKI);
+        this.generated(SNAGGLEHORN);
+        this.generated(STRIPED_LUMINO);
+        this.generated(SWINGBULB);
+        this.generated(THROATBINDER);
+        this.generated(WAX_STACK);
     }
 }

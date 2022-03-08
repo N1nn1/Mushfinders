@@ -41,7 +41,21 @@ public class ItemTagGenerator extends AbstractTagGenerator<Item> {
             MushfindersBlocks.ROYAL_BEND.asItem(),
             MushfindersBlocks.SULFUR_BOLETE.asItem(),
             MushfindersBlocks.TOQUESWAB.asItem(),
-            MushfindersBlocks.WARPFUNNEL.asItem()
+            MushfindersBlocks.WARPFUNNEL.asItem(),
+            MushfindersBlocks.AZURE_SKIRT.asItem(),
+            MushfindersBlocks.CATSBANE.asItem(),
+            MushfindersBlocks.DUKES_PLUMP.asItem(),
+            MushfindersBlocks.DUNGWILT.asItem(),
+            MushfindersBlocks.GNOME_HEAD.asItem(),
+            MushfindersBlocks.HEDGEKING.asItem(),
+            MushfindersBlocks.INKWEEP.asItem(),
+            MushfindersBlocks.MARITOLD.asItem(),
+            MushfindersBlocks.SALMONOKI.asItem(),
+            MushfindersBlocks.SNAGGLEHORN.asItem(),
+            MushfindersBlocks.STRIPED_LUMINO.asItem(),
+            MushfindersBlocks.SWINGBULB.asItem(),
+            MushfindersBlocks.THROATBINDER.asItem(),
+            MushfindersBlocks.WAX_STACK.asItem()
         ).add(ItemTags.SAPLINGS, ItemTags.SMALL_FLOWERS, ItemTags.TALL_FLOWERS);
     }
 }
