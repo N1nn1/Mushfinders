@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.function.Function;
 
 public interface MushfindersPlacedFeatures {
-    Function<Block, RegistryEntry<PlacedFeature>> MUSHROOM = Util.memoize(block -> {
+    Function<Block, RegistryEntry<PlacedFeature>> SURFACE_MUSHROOM = Util.memoize(block -> {
         Identifier id = Registry.BLOCK.getId(block);
-        RegistryEntry<ConfiguredFeature<RandomPatchFeatureConfig, ?>> feature = MushfindersConfiguredFeatures.PATCH_MUSHROOM.apply(block);
+        RegistryEntry<ConfiguredFeature<RandomPatchFeatureConfig, ?>> feature = MushfindersConfiguredFeatures.PATCH_SURFACE_MUSHROOM.apply(block);
         return register(
             new Identifier(id.getNamespace(), "mushroom_%s".formatted(id.getPath())), feature,
             VegetationPlacedFeaturesInvoker.invokeModifiersWithChance(512, null)
@@ -38,7 +38,7 @@ public interface MushfindersPlacedFeatures {
             Identifier id = Registry.BLOCK.getId(block);
             if (id.getNamespace().equals(Mushfinders.MOD_ID)) {
                 if (block instanceof MushfindersMushroomPlantBlock) {
-                    RegistryEntry<PlacedFeature> feature = MUSHROOM.apply(block);
+                    RegistryEntry<PlacedFeature> feature = SURFACE_MUSHROOM.apply(block);
                     tryPlace(feature, MushfindersBiomeTags.SPAWNS.apply(feature), GenerationStep.Feature.VEGETAL_DECORATION);
                 }
             }

@@ -19,7 +19,7 @@ import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import java.util.function.Function;
 
 public interface MushfindersConfiguredFeatures {
-    Function<Block, RegistryEntry<ConfiguredFeature<RandomPatchFeatureConfig, ?>>> PATCH_MUSHROOM = Util.memoize(block -> {
+    Function<Block, RegistryEntry<ConfiguredFeature<RandomPatchFeatureConfig, ?>>> PATCH_SURFACE_MUSHROOM = Util.memoize(block -> {
         Identifier id = Registry.BLOCK.getId(block);
         return register(new Identifier(id.getNamespace(), "patch_mushroom_%s".formatted(id.getPath())), Feature.RANDOM_PATCH, randomPatch(block));
     });
